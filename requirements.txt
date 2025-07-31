@@ -13,3 +13,4 @@ langchain_google_genai
 langgraph
 langchain
 langmem
+python-multipart

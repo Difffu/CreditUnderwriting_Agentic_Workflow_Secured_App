@@ -1,15 +1,20 @@
 from sqlalchemy.orm import Session
-import models, schemas
-from utils.security import get_password_hash
-from logger import logger
+from .models import CreditUnderwriter, LoanCase
+from .schemas import (
+    CreditUnderwriterCreate,
+    LoanCaseCreate,
+    LoanCaseUpdate
+)
+from .utils.security import get_password_hash
+from .logger import logger
 
 # User operations
 def get_user_by_email(db: Session, email: str):
-    return db.query(models.CreditUnderwriter).filter(models.CreditUnderwriter.email == email).first()
+    return db.query(CreditUnderwriter).filter(CreditUnderwriter.email == email).first()
 
-def create_user(db: Session, user: schemas.CreditUnderwriterCreate):
+def create_user(db: Session, user: CreditUnderwriterCreate):
     hashed_password = get_password_hash(user.password)
-    db_user = models.CreditUnderwriter(
+    db_user = CreditUnderwriter(
         name=user.name,
         email=user.email,
         phone=user.phone,
@@ -35,8 +40,8 @@ def update_user_password(db: Session, email: str, new_password: str):
     return user
 
 # Loan case operations
-def create_loan_case(db: Session, loan_case: schemas.LoanCaseCreate, underwriter_id: int):
-    db_loan_case = models.LoanCase(
+def create_loan_case(db: Session, loan_case: LoanCaseCreate, underwriter_id: int):
+    db_loan_case = LoanCaseCreate(
         **loan_case.dict(),
         underwriter_id=underwriter_id
     )
@@ -45,7 +50,7 @@ def create_loan_case(db: Session, loan_case: schemas.LoanCaseCreate, underwriter
     db.refresh(db_loan_case)
     
     # Add loan case to underwriter's list
-    underwriter = db.query(models.CreditUnderwriter).get(underwriter_id)
+    underwriter = db.query(CreditUnderwriter).get(underwriter_id)
     if underwriter:
         underwriter.loan_cases = list(set(underwriter.loan_cases + [db_loan_case.id]))
         db.commit()
@@ -55,17 +60,21 @@ def create_loan_case(db: Session, loan_case: schemas.LoanCaseCreate, underwriter
     return db_loan_case
 
 def get_loan_case(db: Session, case_id: int):
-    return db.query(models.LoanCase).filter(models.LoanCase.id == case_id).first()
+    return db.query(LoanCase).filter(LoanCase.id == case_id).first()
 
 def get_user_loan_cases(db: Session, underwriter_id: int):
-    return db.query(models.LoanCase).filter(models.LoanCase.underwriter_id == underwriter_id).all()
+    return db.query(LoanCase).filter(LoanCase.underwriter_id == underwriter_id).all()
 
-def update_loan_case(db: Session, case_id: int, loan_case: schemas.LoanCaseCreate):
+# Update the update_loan_case function
+def update_loan_case(db: Session, case_id: int, loan_case: LoanCaseUpdate):
     db_loan_case = get_loan_case(db, case_id)
     if not db_loan_case:
         return None
-    for key, value in loan_case.dict().items():
+    
+    update_data = loan_case.dict(exclude_unset=True)
+    for key, value in update_data.items():
         setattr(db_loan_case, key, value)
+    
     db.commit()
     db.refresh(db_loan_case)
     logger.info(f"Loan case updated: {case_id}")
@@ -77,7 +86,7 @@ def delete_loan_case(db: Session, case_id: int):
         return False
     
     # Remove from underwriter's list
-    underwriter = db.query(models.CreditUnderwriter).get(db_loan_case.underwriter_id)
+    underwriter = db.query(CreditUnderwriter).get(db_loan_case.underwriter_id)
     if underwriter:
         underwriter.loan_cases = [case for case in underwriter.loan_cases if case != case_id]
         db.commit()

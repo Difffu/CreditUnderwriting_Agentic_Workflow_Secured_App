@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from config import settings
-from logger import logger
+from .config import settings
+from .logger import logger
+from contextlib import contextmanager
 
 # Create database URL
-DATABASE_URL = (
+DATABASE_URL = ( 
     f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
     f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
 )
@@ -22,3 +23,12 @@ def init_db():
     except Exception as e:
         logger.error(f"Error creating database tables: {str(e)}")
         raise
+
+# Database dependency for FastAPI
+# @contextmanager
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

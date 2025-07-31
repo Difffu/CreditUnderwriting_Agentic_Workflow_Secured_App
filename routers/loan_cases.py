@@ -1,8 +1,9 @@
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from database import get_db
-from schemas import LoanCaseCreate, LoanCaseResponse
-from crud import (
+from ..database import get_db
+from ..schemas import LoanCaseCreate, LoanCaseResponse, LoanCaseUpdate
+from ..crud import (
     create_loan_case,
     get_loan_case,
     get_user_loan_cases,
@@ -12,7 +13,7 @@ from crud import (
 from ..dependencies import get_current_user
 from ..crud import get_user_by_email
 from ..logger import logger
-
+ 
 router = APIRouter(tags=["Loan Cases"])
 
 @router.post("/loan-cases/", response_model=LoanCaseResponse, status_code=status.HTTP_201_CREATED)
@@ -71,10 +72,11 @@ def read_loan_case(
     
     return loan_case
 
-@router.put("/loan-cases/{case_id}", response_model=LoanCaseResponse)
+# Change from PUT to PATCH and use LoanCaseUpdate schema
+@router.patch("/loan-cases/{case_id}", response_model=LoanCaseResponse)
 def update_existing_loan_case(
     case_id: int,
-    loan_case: LoanCaseCreate,
+    loan_case: LoanCaseUpdate,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

@@ -27,6 +27,13 @@ class LoanCaseBase(BaseModel):
 class LoanCaseCreate(LoanCaseBase):
     pass
 
+# Add this after LoanCaseCreate
+class LoanCaseUpdate(BaseModel):
+    business_name: Optional[str] = None
+    loan_amount: Optional[int] = None
+    loan_type: Optional[str] = None
+    loan_tenure: Optional[int] = None
+
 class LoanCaseResponse(LoanCaseBase):
     id: int
     underwriter_id: int
@@ -39,7 +46,7 @@ class Token(BaseModel):
     token_type: str
 
 class Login(BaseModel):
-    email: EmailStr
+    username: EmailStr
     password: str
 
 class ForgotPassword(BaseModel):
