@@ -14,3 +14,4 @@ langgraph
 langchain
 langmem
 python-multipart
+sqlalchemy-utils

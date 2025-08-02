@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from CreditUnderwriting_Agentic_Workflow_Secured_App.database import get_db
-from CreditUnderwriting_Agentic_Workflow_Secured_App.schemas import CreditUnderwriterCreate, Token, Login, ForgotPassword
-from CreditUnderwriting_Agentic_Workflow_Secured_App.crud import create_user, get_user_by_email, update_user_password
-from CreditUnderwriting_Agentic_Workflow_Secured_App.utils.security import verify_password, create_access_token
-from CreditUnderwriting_Agentic_Workflow_Secured_App.dependencies import get_current_user
-from CreditUnderwriting_Agentic_Workflow_Secured_App.logger import logger
+from ..database import get_db
+from ..schemas import CreditUnderwriterCreate, Token, Login, ForgotPassword
+from ..crud import create_user, get_user_by_email, update_user_password
+from ..utils.security import verify_password, create_access_token
+from ..dependencies import get_current_user
+from ..logger import logger
 
 router = APIRouter(tags=["Authentication"]) 
 
