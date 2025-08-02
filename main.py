@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
-from .database import init_db
+from .database.database import init_db
 from .routers import loan_cases, auth
-from .logger import logger
+from .utils.logger import logger
 import uvicorn
 
 app = FastAPI(title="Credit Underwriter API", version="1.0.0")
