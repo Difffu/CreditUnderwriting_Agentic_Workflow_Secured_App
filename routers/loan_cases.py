@@ -9,7 +9,7 @@ from ..database.crud import (
     update_loan_case,
     delete_loan_case
 )
-from ..utils.dependencies import get_current_user
+from ..auth.dependencies import get_current_user
 from ..database.crud import get_user_by_email
 from ..utils.logger import logger
  

@@ -5,7 +5,7 @@ from .schemas import (
     LoanCaseCreate,
     LoanCaseUpdate
 )
-from ..utils.security import get_password_hash
+from ..auth.security import get_password_hash
 from ..utils.logger import logger
 
 # User operations

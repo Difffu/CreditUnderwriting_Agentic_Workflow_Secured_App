@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
-from ..config import settings
+from ..utils.config import settings
 from ..utils.logger import logger
 from contextlib import contextmanager
 
