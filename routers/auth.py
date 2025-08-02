@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from ..database.database import get_db
 from ..database.schemas import CreditUnderwriterCreate, Token, Login, ForgotPassword
 from ..database.crud import create_user, get_user_by_email, update_user_password
-from ..utils.security import verify_password, create_access_token
-from ..utils.dependencies import get_current_user
+from ..auth.security import verify_password, create_access_token
+from ..auth.dependencies import get_current_user
 from ..utils.logger import logger
 
 router = APIRouter(tags=["Authentication"]) 
