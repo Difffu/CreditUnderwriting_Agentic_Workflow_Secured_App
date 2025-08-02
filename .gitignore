@@ -3,6 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+aenv/
+test.ipynb
+logs/
+
 # C extensions
 *.so
 
