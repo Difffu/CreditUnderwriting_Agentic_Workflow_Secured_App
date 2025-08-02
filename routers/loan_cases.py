@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..schemas import LoanCaseCreate, LoanCaseResponse, LoanCaseUpdate
-from ..crud import (
+from ..database.database import get_db
+from ..database.schemas import LoanCaseCreate, LoanCaseResponse, LoanCaseUpdate
+from ..database.crud import (
     create_loan_case,
     get_loan_case,
     get_user_loan_cases,
     update_loan_case,
     delete_loan_case
 )
-from ..dependencies import get_current_user
-from ..crud import get_user_by_email
-from ..logger import logger
+from ..utils.dependencies import get_current_user
+from ..database.crud import get_user_by_email
+from ..utils.logger import logger
  
 router = APIRouter(tags=["Loan Cases"])
 
