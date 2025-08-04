@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, WebSocket, WebSocketDisconnect
 from .database.database import init_db
-from .routers import loan_cases, auth
+from .routers import loan_cases, auth, chat
 from .utils.logger import logger
 import uvicorn
 
@@ -19,6 +19,7 @@ def on_startup():
 # Include routers
 app.include_router(auth.router)
 app.include_router(loan_cases.router)
+app.include_router(chat.router)
 
 @app.get("/health")
 def health_check():
@@ -33,15 +34,15 @@ def root():
     }
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await websocket.send_text(f"Message text was: {data}")
-    except WebSocketDisconnect:
-        pass
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await websocket.accept()
+#     try:
+#         while True:
+#             data = await websocket.receive_text()
+#             await websocket.send_text(f"Message text was: {data}")
+#     except WebSocketDisconnect:
+#         pass
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
