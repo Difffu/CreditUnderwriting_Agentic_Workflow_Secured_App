@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI
 from .database.database import init_db
 from .routers import loan_cases, auth, chat
 from .utils.logger import logger
