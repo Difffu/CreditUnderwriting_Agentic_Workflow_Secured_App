@@ -53,3 +53,10 @@ class ForgotPassword(BaseModel):
     email: EmailStr
     security_answer: str
     new_password: str = Field(..., min_length=8)
+
+
+class ZipUploadResponse(BaseModel):
+    original_filename: str
+    extracted_files: list[str]
+    s3_paths: list[str]
+    message: str

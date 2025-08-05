@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from .database.database import init_db
-from .routers import loan_cases, auth, chat
+from .routers import loan_cases, auth, chat, file_upload
 from .utils.logger import logger
 import uvicorn
 
@@ -20,6 +20,7 @@ def on_startup():
 app.include_router(auth.router)
 app.include_router(loan_cases.router)
 app.include_router(chat.router)
+app.include_router(file_upload.router)
 
 @app.get("/health")
 def health_check():
