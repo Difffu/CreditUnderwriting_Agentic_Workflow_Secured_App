@@ -5,9 +5,9 @@ from google.genai import types
 from ..utils.logger import logger
 from ..utils.config import settings
 from ..auth.security import verify_token
+from ..llm.client import client
 
 # Initialize Gemini client
-client = genai.Client(api_key=settings.GOOGLE_API_KEY)
 model_name = settings.GEMINI_MODEL
 
 
